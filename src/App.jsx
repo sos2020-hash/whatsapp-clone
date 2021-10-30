@@ -8,14 +8,33 @@ import { mainUser, contactsMessages, Message } from "./generateFakeData";
 import "./App.css";
 
 function App() {
-  const [data, setData] = useState(contactsMessages);
+  const [data, setData] = useState([]);
   const [contactSelected, setContactSelected] = useState({});
   const [currentMessages, setCurrentMessages] = useState([]);
   const [message, setMessage] = useState("");
-  const [search, setSearch] = useState("");
+  const [search, setSearch] = useState([]);
   const [filteredContacts, setFilterContacts] = useState([]);
 
   useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const res = await fetch(
+          "https://anduscheung.github.io/datalouder_live_code_test/data.json"
+        );
+        if (res.ok) {
+          let result = await res.json();
+          setData(result.conversations);
+          console.log(result.conversations);
+        }
+      } catch (error) {
+        console.log(error);
+      }
+    };
+    fetchData();
+  }, []);
+
+  useEffect(() => {
+    console.log(data);
     const currContact = data.find((data) => data.id === contactSelected.id);
     setCurrentMessages((currContact && currContact.messages) || []);
     filterContacts(data, search);
@@ -38,8 +57,9 @@ function App() {
   }
 
   const handleSearch = (input) => {
-    setSearch(input);
-    filterContacts(data, input);
+    let inputArr = input.split(" ");
+    setSearch(inputArr);
+    filterContacts(data, inputArr);
   };
 
   const filterContacts = (data, search) => {
@@ -54,18 +74,23 @@ function App() {
     <div className="app">
       <aside>
         <header>
-          <Avatar user={mainUser} />
+          <Avatar user={data} />
         </header>
         <Search search={search} handleSearch={handleSearch} />
         <div className="contact-boxes">
-          {data.map(({ contact, messages }) => (
-            <ContactBox
-              contact={contact}
-              key={contact.id}
-              setContactSelected={setContactSelected}
-              messages={messages}
-            />
-          ))}
+          {filteredContacts
+            .map(({ contact, messages }) => (
+              <ContactBox
+                contact={contact}
+                key={contact.id}
+                setContactSelected={setContactSelected}
+                messages={messages}
+              />
+            ))
+            .sort(function (a, b) {
+              return new Date(b.created_at) - new Date(a.created_at);
+            })
+            .reverse()}
         </div>
       </aside>
       <main>
