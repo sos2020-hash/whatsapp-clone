@@ -4,7 +4,7 @@ import Avatar from "./Avatar";
 
 const ContactBox = ({ contact, setContactSelected, messages }) => {
   const newDateArr = messages.sort(function (a, b) {
-    return new Date(a.created_at) - new Date(b.created_at);
+    return new Date(a.created_at).getTime() - new Date(b.created_at).getTime();
   });
   let lastMsg = newDateArr[newDateArr.length - 1];
   console.log(lastMsg);

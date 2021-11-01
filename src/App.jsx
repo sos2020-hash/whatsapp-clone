@@ -57,16 +57,13 @@ function App() {
   }
 
   const handleSearch = (input) => {
-    let inputArr = input.split(" ");
-    setSearch(inputArr);
-    filterContacts(data, inputArr);
+    setSearch(input);
+    filterContacts(data, input);
   };
 
   const filterContacts = (data, search) => {
     const result = data.filter(({ contact }) => {
-      return (
-        !search || contact.name.toLowerCase().includes(search.toLowerCase())
-      );
+      return !search || contact.name.toLowerCase().includes(search);
     });
     setFilterContacts(result);
   };
@@ -87,9 +84,6 @@ function App() {
                 messages={messages}
               />
             ))
-            .sort(function (a, b) {
-              return new Date(b.created_at) - new Date(a.created_at);
-            })
             .reverse()}
         </div>
       </aside>
