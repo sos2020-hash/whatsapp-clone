@@ -3,11 +3,7 @@ import doubleCheck from "../assets/done_all.svg";
 import Avatar from "./Avatar";
 
 const ContactBox = ({ contact, setContactSelected, messages }) => {
-  const newDateArr = messages.sort(function (a, b) {
-    return new Date(a.created_at).getTime() - new Date(b.created_at).getTime();
-  });
-  let lastMsg = newDateArr[newDateArr.length - 1];
-  console.log(lastMsg);
+  let lastMsg = messages[messages.length - 1];
   const truncate = (text, length) => {
     return text.length > length ? `${text.substring(0, length)} ...` : text;
   };

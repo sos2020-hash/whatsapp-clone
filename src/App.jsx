@@ -4,7 +4,6 @@ import ContactBox from "./components/ContactBox";
 import MessageBox from "./components/MessageBox";
 import CheckInput from "./components/CheckInput";
 import Search from "./components/Search";
-import { mainUser, contactsMessages, Message } from "./generateFakeData";
 import "./App.css";
 
 function App() {
@@ -15,6 +14,7 @@ function App() {
   const [search, setSearch] = useState([]);
   const [filteredContacts, setFilterContacts] = useState([]);
 
+  console.log(filteredContacts);
   useEffect(() => {
     const fetchData = async () => {
       try {
@@ -24,7 +24,6 @@ function App() {
         if (res.ok) {
           let result = await res.json();
           setData(result.conversations);
-          console.log(result.conversations);
         }
       } catch (error) {
         console.log(error);
@@ -34,27 +33,10 @@ function App() {
   }, []);
 
   useEffect(() => {
-    console.log(data);
     const currContact = data.find((data) => data.id === contactSelected.id);
     setCurrentMessages((currContact && currContact.messages) || []);
     filterContacts(data, search);
   }, [contactSelected, data, search]);
-
-  function pushMessage() {
-    const index = data.findIndex((d) => d.contact.id === contactSelected.id);
-    const newData = Object.assign([], data, {
-      [index]: {
-        contact: contactSelected,
-        messages: [
-          ...data[index].messages,
-          new Message(true, message, new Date()),
-        ],
-      },
-    });
-
-    setData(newData);
-    setMessage("");
-  }
 
   const handleSearch = (input) => {
     setSearch(input);
@@ -62,8 +44,12 @@ function App() {
   };
 
   const filterContacts = (data, search) => {
-    const result = data.filter(({ contact }) => {
-      return !search || contact.name.toLowerCase().includes(search);
+    const result = data.filter(({ contact, messages }) => {
+      return (
+        !search ||
+        contact.name.toLowerCase().includes(search) ||
+        messages[messages.length - 1].content.toLowerCase().includes(search)
+      );
     });
     setFilterContacts(result);
   };
@@ -76,6 +62,14 @@ function App() {
         <Search search={search} handleSearch={handleSearch} />
         <div className="contact-boxes">
           {filteredContacts
+            .sort(function (a, b) {
+              return (
+                new Date(
+                  b.messages[b.messages.length - 1].created_at
+                ).getTime() -
+                new Date(a.messages[a.messages.length - 1].created_at).getTime()
+              );
+            })
             .map(({ contact, messages }) => (
               <ContactBox
                 contact={contact}
@@ -83,8 +77,7 @@ function App() {
                 setContactSelected={setContactSelected}
                 messages={messages}
               />
-            ))
-            .reverse()}
+            ))}
         </div>
       </aside>
       <main>
@@ -92,11 +85,7 @@ function App() {
           <Avatar user={contactSelected} showName={true} />
         </header>
         <MessageBox messages={currentMessages} />
-        <CheckInput
-          message={message}
-          setMessage={setMessage}
-          pushMessage={pushMessage}
-        />
+        <CheckInput message={message} setMessage={setMessage} />
       </main>
     </div>
   );
