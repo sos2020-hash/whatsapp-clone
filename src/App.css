@@ -20,7 +20,6 @@ aside {
 main {
   width: 70%;
   background: #e5ddd5;
-  background-image: url(./assets/chatbg.png);
   display: flex;
   flex-direction: column;
   background-size: contain;
@@ -59,7 +58,6 @@ main {
 }
 .contact-box {
   background: #fff;
-
   padding: 0.75rem 0.75rem;
   display: flex;
   align-items: center;
@@ -70,18 +68,12 @@ main {
   background: #ebebeb;
 }
 
-main header,
 aside header {
   background: #ededed;
   height: 3rem;
   display: flex;
   justify-content: space-between;
   align-items: center;
-}
-
-main header {
-  justify-content: flex-start;
-  padding: 0 1rem;
 }
 
 .time-mark {
@@ -157,71 +149,6 @@ input:focus {
 .emoji-selector {
   width: 5%;
   text-align: center;
-}
-.chat-input {
-  width: 90%;
-}
-.send {
-  width: 5%;
-  text-align: center;
-}
-
-.message {
-  color: #000;
-  clear: both;
-  line-height: 18px;
-  font-size: 15px;
-  padding: 8px;
-  position: relative;
-  margin: 8px 0;
-  max-width: 60%;
-  word-wrap: break-word;
-}
-
-.message::before {
-  position: absolute;
-  left: -10px;
-  top: 0;
-  content: "";
-  display: block;
-  border: solid;
-  border-width: 0px 16px 16px 0px;
-  border-color: transparent;
-  border-right-color: #fff;
-}
-.message.received {
-  background: #fff;
-  border-radius: 0px 5px 5px 5px;
-  float: left;
-}
-.message.sent::before {
-  left: auto;
-  right: -28px;
-  border-width: 0px 16px 16px 16px;
-  border-color: transparent;
-  border-left-color: #e1ffc7;
-}
-
-.message.sent {
-  background: #e1ffc7;
-  border-radius: 5px 0px 5px 5px;
-  float: right;
-}
-
-.welcome {
-  background: #f8f9fa;
-  flex: 1;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  flex-direction: column;
-}
-.welcome h2 {
-  margin-top: 2rem;
-  font-weight: normal;
-}
-.welcome img {
-  width: 300px;
 }
 
 .metadata {

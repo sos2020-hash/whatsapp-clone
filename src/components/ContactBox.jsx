@@ -2,11 +2,19 @@ import React from "react";
 import doubleCheck from "../assets/done_all.svg";
 import Avatar from "./Avatar";
 
-const ContactBox = ({ contact, setContactSelected, messages }) => {
+const ContactBox = ({
+  contact,
+  setContactSelected,
+  messages,
+  contactSelected,
+}) => {
   let lastMsg = messages[messages.length - 1];
   const truncate = (text, length) => {
     return text.length > length ? `${text.substring(0, length)} ...` : text;
   };
+
+  console.log(contact);
+  console.log(contactSelected);
 
   function formatDate(date) {
     var d = new Date(date),
@@ -20,7 +28,16 @@ const ContactBox = ({ contact, setContactSelected, messages }) => {
     return [day, month, year].join("-");
   }
   return (
-    <div className="contact-box" onClick={() => setContactSelected(contact)}>
+    <div
+      className="contact-box"
+      onClick={() => setContactSelected(contact)}
+      // style={{
+      //   backgroundColor:
+      //     contactSelected.name === contact.name
+      //       ? "  background: #ebebeb;"
+      //       : "white",
+      // }}
+    >
       <Avatar user={contact} />
       <div className="right-section">
         <div className="contact-box-header">

@@ -1,20 +1,14 @@
 import React, { useState, useEffect } from "react";
-import Avatar from "./components/Avatar";
 import ContactBox from "./components/ContactBox";
-import MessageBox from "./components/MessageBox";
-import CheckInput from "./components/CheckInput";
 import Search from "./components/Search";
 import "./App.css";
 
 function App() {
   const [data, setData] = useState([]);
   const [contactSelected, setContactSelected] = useState({});
-  const [currentMessages, setCurrentMessages] = useState([]);
-  const [message, setMessage] = useState("");
   const [search, setSearch] = useState([]);
   const [filteredContacts, setFilterContacts] = useState([]);
 
-  console.log(filteredContacts);
   useEffect(() => {
     const fetchData = async () => {
       try {
@@ -33,8 +27,6 @@ function App() {
   }, []);
 
   useEffect(() => {
-    const currContact = data.find((data) => data.id === contactSelected.id);
-    setCurrentMessages((currContact && currContact.messages) || []);
     filterContacts(data, search);
   }, [contactSelected, data, search]);
 
@@ -56,9 +48,6 @@ function App() {
   return (
     <div className="app">
       <aside>
-        <header>
-          <Avatar user={data} />
-        </header>
         <Search search={search} handleSearch={handleSearch} />
         <div className="contact-boxes">
           {filteredContacts
@@ -74,19 +63,13 @@ function App() {
               <ContactBox
                 contact={contact}
                 key={contact.id}
-                setContactSelected={setContactSelected}
                 messages={messages}
+                setContactSelected={setContactSelected}
+                contactSelected={contactSelected}
               />
             ))}
         </div>
       </aside>
-      <main>
-        <header>
-          <Avatar user={contactSelected} showName={true} />
-        </header>
-        <MessageBox messages={currentMessages} />
-        <CheckInput message={message} setMessage={setMessage} />
-      </main>
     </div>
   );
 }
