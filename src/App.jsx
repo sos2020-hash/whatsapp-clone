@@ -6,7 +6,7 @@ import "./App.css";
 function App() {
   const [data, setData] = useState([]);
   const [contactSelected, setContactSelected] = useState({});
-  const [search, setSearch] = useState([]);
+  const [search, setSearch] = useState("");
   const [filteredContacts, setFilterContacts] = useState([]);
 
   useEffect(() => {
@@ -39,8 +39,10 @@ function App() {
     const result = data.filter(({ contact, messages }) => {
       return (
         !search ||
-        contact.name.toLowerCase().includes(search) ||
-        messages[messages.length - 1].content.toLowerCase().includes(search)
+        contact.name.toLowerCase().includes(search.toLowerCase()) ||
+        messages[messages.length - 1].content
+          .toLowerCase()
+          .includes(search.toLowerCase())
       );
     });
     setFilterContacts(result);
