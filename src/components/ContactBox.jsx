@@ -28,16 +28,7 @@ const ContactBox = ({
     return [day, month, year].join("-");
   }
   return (
-    <div
-      className="contact-box"
-      onClick={() => setContactSelected(contact)}
-      // style={{
-      //   backgroundColor:
-      //     contactSelected.name === contact.name
-      //       ? "  background: #ebebeb;"
-      //       : "white",
-      // }}
-    >
+    <div className="contact-box" onClick={() => setContactSelected(contact)}>
       <Avatar user={contact} />
       <div className="right-section">
         <div className="contact-box-header">
